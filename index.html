@@ -55,6 +55,12 @@
       flex: 1;
     }
 
+    .products-area h2 {
+      text-align: center;
+      color: #ffdd57;
+      margin-bottom: 20px;
+    }
+
     .product-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -69,19 +75,23 @@
       text-align: center;
       box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
       transition: transform 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 350px;
     }
 
     .product-card:hover {
       transform: scale(1.03);
     }
 
-    /* 🖼 Product Image Styling */
     .product-card img {
       width: 100%;
       height: 150px;
       object-fit: cover;
       border-radius: 8px;
       margin-bottom: 10px;
+      flex-shrink: 0;
     }
 
     .product-card h3 {
@@ -99,6 +109,13 @@
 
     .rating {
       color: #f39c12;
+    }
+
+    #noProducts {
+      text-align: center;
+      font-size: 18px;
+      color: #ffdede;
+      margin-top: 40px;
     }
 
     @media (max-width: 768px) {
@@ -139,11 +156,11 @@
 
     <!-- 🧱 Product Display Area -->
     <div class="products-area">
-      <h2 style="text-align:center; color: #ffdd57; margin-bottom: 20px;">
-        🛒 Product Listing
-      </h2>
+      <h2>🛒 Product Listing</h2>
       <div class="product-grid" id="productGrid"></div>
+      <div id="noProducts" style="display: none;">❌ No products found for the selected filter.</div>
     </div>
+  </div>
 
   <script>
     // 🛍 Product Data Array (JSON)
@@ -154,7 +171,6 @@
         price: 12000,
         rating: 4.2,
         image: "smartphone.jpg"
-
       },
       {
         name: "Laptop",
@@ -196,16 +212,23 @@
     const grid = document.getElementById("productGrid");
     const categoryFilter = document.getElementById("categoryFilter");
     const sortOption = document.getElementById("sortOption");
+    const noProductsMessage = document.getElementById("noProducts");
 
     // 🔁 Renders filtered and sorted product list
     function renderProducts(productList) {
       grid.innerHTML = "";
+      if (productList.length === 0) {
+        noProductsMessage.style.display = "block";
+        return;
+      } else {
+        noProductsMessage.style.display = "none";
+      }
+
       productList.forEach(product => {
         const card = document.createElement("div");
         card.className = "product-card";
 
         card.innerHTML = `
-          <!-- 🖼 You can change image URL here -->
           <img src="${product.image}" alt="${product.name}">
           <h3>${product.name}</h3>
           <p>Category: ${product.category}</p>
@@ -220,13 +243,11 @@
     function filterAndSortProducts() {
       let filtered = [...products];
 
-      // Category Filter
       const selectedCategory = categoryFilter.value;
       if (selectedCategory !== "All") {
         filtered = filtered.filter(p => p.category === selectedCategory);
       }
 
-      // Sorting
       const selectedSort = sortOption.value;
       if (selectedSort === "priceAsc") {
         filtered.sort((a, b) => a.price - b.price);
