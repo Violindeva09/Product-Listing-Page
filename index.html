@@ -11,7 +11,7 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298); /* 🌈 Gradient background */
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
       padding: 0;
     }
 
@@ -22,7 +22,6 @@
       color: #fff;
     }
 
-    /* Sidebar Filters */
     .sidebar {
       width: 250px;
       background: rgba(0, 0, 0, 0.1);
@@ -50,7 +49,6 @@
       border: none;
     }
 
-    /* Product Grid Area */
     .products-area {
       flex: 1;
     }
@@ -63,8 +61,11 @@
 
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* 🔧 uniform sizing */
+      justify-content: center;
       gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
     }
 
     .product-card {
@@ -78,7 +79,8 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 350px;
+      min-height: 370px;
+      height: 100%;
     }
 
     .product-card:hover {
@@ -133,7 +135,6 @@
 <body>
 
   <div class="container">
-    <!-- 📦 Sidebar Filters & Sort -->
     <div class="sidebar">
       <h3>Filter & Sort</h3>
 
@@ -154,7 +155,6 @@
       </select>
     </div>
 
-    <!-- 🧱 Product Display Area -->
     <div class="products-area">
       <h2>🛒 Product Listing</h2>
       <div class="product-grid" id="productGrid"></div>
@@ -163,7 +163,6 @@
   </div>
 
   <script>
-    // 🛍 Product Data Array (JSON)
     const products = [
       {
         name: "Smartphone",
@@ -214,7 +213,6 @@
     const sortOption = document.getElementById("sortOption");
     const noProductsMessage = document.getElementById("noProducts");
 
-    // 🔁 Renders filtered and sorted product list
     function renderProducts(productList) {
       grid.innerHTML = "";
       if (productList.length === 0) {
@@ -227,7 +225,6 @@
       productList.forEach(product => {
         const card = document.createElement("div");
         card.className = "product-card";
-
         card.innerHTML = `
           <img src="${product.image}" alt="${product.name}">
           <h3>${product.name}</h3>
@@ -239,7 +236,6 @@
       });
     }
 
-    // 🔄 Handles filter and sort logic
     function filterAndSortProducts() {
       let filtered = [...products];
 
@@ -260,11 +256,9 @@
       renderProducts(filtered);
     }
 
-    // 🔗 Event Listeners
     categoryFilter.addEventListener("change", filterAndSortProducts);
     sortOption.addEventListener("change", filterAndSortProducts);
 
-    // Initial render
     renderProducts(products);
   </script>
 
