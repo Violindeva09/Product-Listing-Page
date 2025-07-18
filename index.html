@@ -11,7 +11,7 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298); /* 🌈 Gradient background */
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
       padding: 0;
     }
 
@@ -22,10 +22,9 @@
       color: #fff;
     }
 
-    /* Sidebar Filters */
     .sidebar {
       width: 250px;
-      background: rgba(0, 0, 0, 0.1);
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* sidebar gradient */
       padding: 20px;
       border-radius: 10px;
       margin-right: 20px;
@@ -50,9 +49,17 @@
       border: none;
     }
 
-    /* Product Grid Area */
     .products-area {
       flex: 1;
+    }
+
+    .products-area h2 {
+      text-align: center;
+      color: #ffdd57;
+      margin-bottom: 20px;
+      background: linear-gradient(to right, #ff512f, #dd2476);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .product-grid {
@@ -62,20 +69,20 @@
     }
 
     .product-card {
-      background: #ffffff;
+      background: linear-gradient(135deg, #fdfcfb, #e2d1c3);
       color: #333;
       padding: 15px;
       border-radius: 10px;
       text-align: center;
       box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
-      transition: transform 0.2s ease;
+      transition: transform 0.3s ease;
     }
 
     .product-card:hover {
-      transform: scale(1.03);
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
     }
 
-    /* 🖼 Product Image Styling */
     .product-card img {
       width: 100%;
       height: 150px;
@@ -116,7 +123,6 @@
 <body>
 
   <div class="container">
-    <!-- 📦 Sidebar Filters & Sort -->
     <div class="sidebar">
       <h3>Filter & Sort</h3>
 
@@ -137,115 +143,103 @@
       </select>
     </div>
 
-    <!-- 🧱 Product Display Area -->
     <div class="products-area">
-      <h2 style="text-align:center; color: #ffdd57; margin-bottom: 20px;">
-        🛒 Product Listing
-      </h2>
+      <h2>🛒 Product Listing</h2>
       <div class="product-grid" id="productGrid"></div>
     </div>
 
-  <script>
-    // 🛍 Product Data Array (JSON)
-    const products = [
-      {
-        name: "Smartphone",
-        category: "Electronics",
-        price: 12000,
-        rating: 4.2,
-        image: "smartphone.jpg"
+    <script>
+      const products = [
+        {
+          name: "Smartphone",
+          category: "Electronics",
+          price: 12000,
+          rating: 4.2,
+          image: "Pictures/smartphone.jpg"
+        },
+        {
+          name: "Laptop",
+          category: "Electronics",
+          price: 45000,
+          rating: 4.5,
+          image: "Pictures/laptop.jpg"
+        },
+        {
+          name: "Jeans",
+          category: "Clothing",
+          price: 1500,
+          rating: 3.9,
+          image: "Pictures/jeans.jpg"
+        },
+        {
+          name: "T-Shirt",
+          category: "Clothing",
+          price: 700,
+          rating: 4.1,
+          image: "Pictures/t-shirt.jpg"
+        },
+        {
+          name: "Novel",
+          category: "Books",
+          price: 400,
+          rating: 4.7,
+          image: "Pictures/novel.jpg"
+        },
+        {
+          name: "Notebook",
+          category: "Books",
+          price: 100,
+          rating: 3.5,
+          image: "Pictures/notebook.jpg"
+        }
+      ];
 
-      },
-      {
-        name: "Laptop",
-        category: "Electronics",
-        price: 45000,
-        rating: 4.5,
-        image: "laptop.jpg"
-      },
-      {
-        name: "Jeans",
-        category: "Clothing",
-        price: 1500,
-        rating: 3.9,
-        image: "jeans.jpg"
-      },
-      {
-        name: "T-Shirt",
-        category: "Clothing",
-        price: 700,
-        rating: 4.1,
-        image: "t-shirt.jpg"
-      },
-      {
-        name: "Novel",
-        category: "Books",
-        price: 400,
-        rating: 4.7,
-        image: "novel.jpg"
-      },
-      {
-        name: "Notebook",
-        category: "Books",
-        price: 100,
-        rating: 3.5,
-        image: "notebook.jpg"
-      }
-    ];
+      const grid = document.getElementById("productGrid");
+      const categoryFilter = document.getElementById("categoryFilter");
+      const sortOption = document.getElementById("sortOption");
 
-    const grid = document.getElementById("productGrid");
-    const categoryFilter = document.getElementById("categoryFilter");
-    const sortOption = document.getElementById("sortOption");
+      function renderProducts(productList) {
+        grid.innerHTML = "";
+        productList.forEach(product => {
+          const card = document.createElement("div");
+          card.className = "product-card";
 
-    // 🔁 Renders filtered and sorted product list
-    function renderProducts(productList) {
-      grid.innerHTML = "";
-      productList.forEach(product => {
-        const card = document.createElement("div");
-        card.className = "product-card";
-
-        card.innerHTML = `
-          <!-- 🖼 You can change image URL here -->
-          <img src="${product.image}" alt="${product.name}">
-          <h3>${product.name}</h3>
-          <p>Category: ${product.category}</p>
-          <p class="price">₹${product.price}</p>
-          <p class="rating">⭐ ${product.rating}</p>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    // 🔄 Handles filter and sort logic
-    function filterAndSortProducts() {
-      let filtered = [...products];
-
-      // Category Filter
-      const selectedCategory = categoryFilter.value;
-      if (selectedCategory !== "All") {
-        filtered = filtered.filter(p => p.category === selectedCategory);
+          card.innerHTML = `
+            <img src="${product.image}" alt="${product.name}" onerror="this.onerror=null;this.src='https://via.placeholder.com/220x150?text=No+Image';">
+            <h3>${product.name}</h3>
+            <p>Category: ${product.category}</p>
+            <p class="price">₹${product.price}</p>
+            <p class="rating">⭐ ${product.rating}</p>
+          `;
+          grid.appendChild(card);
+        });
       }
 
-      // Sorting
-      const selectedSort = sortOption.value;
-      if (selectedSort === "priceAsc") {
-        filtered.sort((a, b) => a.price - b.price);
-      } else if (selectedSort === "priceDesc") {
-        filtered.sort((a, b) => b.price - a.price);
-      } else if (selectedSort === "ratingDesc") {
-        filtered.sort((a, b) => b.rating - a.rating);
+      function filterAndSortProducts() {
+        let filtered = [...products];
+
+        const selectedCategory = categoryFilter.value;
+        if (selectedCategory !== "All") {
+          filtered = filtered.filter(p => p.category === selectedCategory);
+        }
+
+        const selectedSort = sortOption.value;
+        if (selectedSort === "priceAsc") {
+          filtered.sort((a, b) => a.price - b.price);
+        } else if (selectedSort === "priceDesc") {
+          filtered.sort((a, b) => b.price - a.price);
+        } else if (selectedSort === "ratingDesc") {
+          filtered.sort((a, b) => b.rating - a.rating);
+        }
+
+        renderProducts(filtered);
       }
 
-      renderProducts(filtered);
-    }
+      categoryFilter.addEventListener("change", filterAndSortProducts);
+      sortOption.addEventListener("change", filterAndSortProducts);
 
-    // 🔗 Event Listeners
-    categoryFilter.addEventListener("change", filterAndSortProducts);
-    sortOption.addEventListener("change", filterAndSortProducts);
-
-    // Initial render
-    renderProducts(products);
-  </script>
-
+      renderProducts(products);
+    </script>
+  </div>
 </body>
 </html>
