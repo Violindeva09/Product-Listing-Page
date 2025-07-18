@@ -4,120 +4,119 @@
   <meta charset="UTF-8">
   <title>Product Listing Page</title>
   <style>
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f0f2f5;
-  }
+    * {
+      box-sizing: border-box;
+    }
 
-  header {
-    background-color: #343a40;
-    color: white;
-    padding: 1rem;
-    text-align: center;
-    font-size: 1.5rem;
-    letter-spacing: 0.5px;
-  }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298); /* 🌈 Gradient background */
+      padding: 0;
+    }
 
-  .container {
-    display: flex;
-    padding: 20px;
-  }
-
-  .sidebar {
-    flex: 1;
-    max-width: 200px;
-    margin-right: 20px;
-  }
-
-  .main {
-    flex: 3;
-  }
-
-  .filter-group {
-    margin-bottom: 15px;
-  }
-
-  label {
-    font-weight: bold;
-  }
-
-  select {
-    width: 100%;
-    padding: 5px;
-    font-size: 14px;
-    margin-top: 5px;
-  }
-
-  .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 15px;
-  }
-
-  .product-card {
-    background: #ffffff;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    padding: 10px;
-    text-align: center;
-    transition: transform 0.2s ease;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-  }
-
-  .product-card:hover {
-    transform: translateY(-5px);
-  }
-
-  .product-card img {
-    width: 100%;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 5px;
-  }
-
-  .product-card h3 {
-    font-size: 1rem;
-    margin: 8px 0 4px;
-  }
-
-  .product-card p {
-    margin: 4px 0;
-    font-size: 0.9rem;
-  }
-
-  .price {
-    color: #28a745;
-    font-weight: bold;
-  }
-
-  .rating {
-    color: #ffc107;
-  }
-
-  #noProducts {
-    margin-top: 20px;
-    font-weight: bold;
-    color: #dc3545;
-    display: none;
-  }
-
-  @media (max-width: 768px) {
     .container {
-      flex-direction: column;
+      display: flex;
+      min-height: 100vh;
+      padding: 20px;
+      color: #fff;
     }
 
+    /* Sidebar Filters */
     .sidebar {
-      max-width: 100%;
-      margin-bottom: 20px;
+      width: 250px;
+      background: rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      margin-right: 20px;
     }
-  }
-</style>
+
+    .sidebar h3 {
+      margin-top: 0;
+      color: #ffdd57;
+    }
+
+    .sidebar label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    /* Product Grid Area */
+    .products-area {
+      flex: 1;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: #ffffff;
+      color: #333;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease;
+    }
+
+    .product-card:hover {
+      transform: scale(1.03);
+    }
+
+    /* 🖼 Product Image Styling */
+    .product-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .product-card h3 {
+      margin: 10px 0 5px;
+    }
+
+    .product-card p {
+      margin: 4px 0;
+    }
+
+    .price {
+      color: green;
+      font-weight: bold;
+    }
+
+    .rating {
+      color: #f39c12;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
 
   <div class="container">
+    <!-- 📦 Sidebar Filters & Sort -->
     <div class="sidebar">
       <h3>Filter & Sort</h3>
 
@@ -138,14 +137,16 @@
       </select>
     </div>
 
+    <!-- 🧱 Product Display Area -->
     <div class="products-area">
-      <h2>🛒 Product Listing</h2>
+      <h2 style="text-align:center; color: #ffdd57; margin-bottom: 20px;">
+        🛒 Product Listing
+      </h2>
       <div class="product-grid" id="productGrid"></div>
-      <div id="noProducts" style="display: none;">❌ No products found for the selected filter.</div>
     </div>
-  </div>
 
   <script>
+    // 🛍 Product Data Array (JSON)
     const products = [
       {
         name: "Smartphone",
@@ -153,6 +154,7 @@
         price: 12000,
         rating: 4.2,
         image: "smartphone.jpg"
+
       },
       {
         name: "Laptop",
@@ -194,21 +196,16 @@
     const grid = document.getElementById("productGrid");
     const categoryFilter = document.getElementById("categoryFilter");
     const sortOption = document.getElementById("sortOption");
-    const noProductsMessage = document.getElementById("noProducts");
 
+    // 🔁 Renders filtered and sorted product list
     function renderProducts(productList) {
       grid.innerHTML = "";
-      if (productList.length === 0) {
-        noProductsMessage.style.display = "block";
-        return;
-      } else {
-        noProductsMessage.style.display = "none";
-      }
-
       productList.forEach(product => {
         const card = document.createElement("div");
         card.className = "product-card";
+
         card.innerHTML = `
+          <!-- 🖼 You can change image URL here -->
           <img src="${product.image}" alt="${product.name}">
           <h3>${product.name}</h3>
           <p>Category: ${product.category}</p>
@@ -219,14 +216,17 @@
       });
     }
 
+    // 🔄 Handles filter and sort logic
     function filterAndSortProducts() {
       let filtered = [...products];
 
+      // Category Filter
       const selectedCategory = categoryFilter.value;
       if (selectedCategory !== "All") {
         filtered = filtered.filter(p => p.category === selectedCategory);
       }
 
+      // Sorting
       const selectedSort = sortOption.value;
       if (selectedSort === "priceAsc") {
         filtered.sort((a, b) => a.price - b.price);
@@ -239,9 +239,11 @@
       renderProducts(filtered);
     }
 
+    // 🔗 Event Listeners
     categoryFilter.addEventListener("change", filterAndSortProducts);
     sortOption.addEventListener("change", filterAndSortProducts);
 
+    // Initial render
     renderProducts(products);
   </script>
 
